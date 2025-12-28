@@ -7,7 +7,11 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ deliveries }) => {
-  const activeDeliveries = deliveries.filter(d => d.status === DeliveryStatus.PENDING || d.status === DeliveryStatus.IN_PROGRESS);
+  /* Fix: Updated the activeDeliveries filter to be more robust by including all non-terminal states. This also resolves the TS error for IN_PROGRESS. */
+  const activeDeliveries = deliveries.filter(d => 
+    d.status !== DeliveryStatus.DELIVERED && 
+    d.status !== DeliveryStatus.CANCELLED
+  );
   const completedToday = deliveries.filter(d => d.status === DeliveryStatus.DELIVERED).length;
   const currentEarnings = deliveries.filter(d => d.status === DeliveryStatus.DELIVERED).reduce((acc, curr) => acc + curr.price, 0);
 
@@ -33,7 +37,7 @@ const Dashboard: React.FC<DashboardProps> = ({ deliveries }) => {
 
       {/* Announcements / System Hub (Replaced AI Hub) */}
       <div className="bg-slate-900 rounded-[3rem] p-10 md:p-14 relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500 opacity-[0.03] rounded-full blur-[100px] -mr-40 -mt-40"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50 opacity-[0.03] rounded-full blur-[100px] -mr-40 -mt-40"></div>
         
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10 mb-12">
           <div className="space-y-4">

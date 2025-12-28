@@ -4,13 +4,13 @@ import { WalletData, WalletTransaction } from '../types';
 const WALLET_KEY = 'bandit_sender_wallet';
 
 const DEFAULT_WALLET: WalletData = {
-  balance: 5000, // Starting balance for demo purposes
+  balance: 15000, // Starting balance for demo
   transactions: [
     {
       id: 'TX-INIT',
       type: 'fund',
-      amount: 5000,
-      description: 'Account Opening Bonus',
+      amount: 15000,
+      description: 'Sign-up Credit (Simulated)',
       date: new Date().toLocaleDateString()
     }
   ]
@@ -32,7 +32,7 @@ export const walletService = {
       id: `TX-FUND-${Math.floor(Math.random() * 100000)}`,
       type: 'fund',
       amount,
-      description: 'Wallet Top-up (Simulated)',
+      description: 'Wallet Top-up',
       date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 

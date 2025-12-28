@@ -1,6 +1,6 @@
 {
   "name": "Bandit Riders",
-  "description": "A professional dispatch delivery web application for riders, featuring high-speed route management, status tracking, and performance analytics.",
+  "description": "Smart Dispatch Delivery Web Application",
   "requestFramePermissions": [
     "geolocation"
   ]

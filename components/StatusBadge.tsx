@@ -17,6 +17,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ type, value }) => {
           return 'bg-indigo-50 text-indigo-600 border-indigo-100 shadow-sm shadow-indigo-100';
         case DeliveryStatus.PICKED_UP:
           return 'bg-purple-50 text-purple-600 border-purple-100 shadow-sm shadow-purple-100';
+        /* Fix: Added case for IN_PROGRESS to ensure it has a specific style */
+        case DeliveryStatus.IN_PROGRESS:
+          return 'bg-blue-50 text-blue-600 border-blue-100 shadow-sm shadow-blue-100';
         case DeliveryStatus.IN_TRANSIT:
           return 'bg-blue-50 text-blue-600 border-blue-100 shadow-sm shadow-blue-100 animate-pulse';
         case DeliveryStatus.DELIVERED:

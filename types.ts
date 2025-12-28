@@ -3,6 +3,7 @@ export enum DeliveryStatus {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
   PICKED_UP = 'Picked Up',
+  /* Added IN_PROGRESS to fix "Property does not exist" errors in components and data files */
   IN_PROGRESS = 'In Progress',
   IN_TRANSIT = 'In Transit',
   DELIVERED = 'Delivered',
@@ -16,8 +17,6 @@ export enum Priority {
 }
 
 export type UserRole = 'rider' | 'sender';
-
-export type CustomerView = 'landing' | 'booking' | 'tracking';
 
 export interface LocationCoords {
   lat: number;
@@ -70,15 +69,6 @@ export interface WalletData {
   transactions: WalletTransaction[];
 }
 
-export interface RiderProfile {
-  name: string;
-  bikeModel: string;
-  totalDeliveries: number;
-  rating: number;
-  earnings: number;
-  avatar: string;
-}
-
 export interface Delivery {
   id: string;
   customerName: string;
@@ -114,3 +104,14 @@ export interface BookingEstimate {
   reasoning: string;
   breakdown: FareBreakdownData;
 }
+
+export interface RiderProfile {
+  name: string;
+  bikeModel: string;
+  totalDeliveries: number;
+  rating: number;
+  earnings: number;
+  avatar: string;
+}
+
+export type CustomerView = 'landing' | 'booking' | 'tracking';

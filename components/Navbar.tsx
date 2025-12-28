@@ -1,11 +1,23 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
+import { walletService } from '../utils/walletService';
+import { formatNaira } from '../utils/fareCalculator';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const user = authService.getCurrentUser();
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    if (user?.role === 'sender') {
+      const sync = () => setBalance(walletService.getWallet().balance);
+      sync();
+      const interval = setInterval(sync, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   const handleLogout = () => {
     authService.logout();
@@ -24,11 +36,11 @@ const Navbar: React.FC = () => {
       <div className="flex items-center gap-8">
         {user && user.role === 'sender' && (
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/order" className="text-sm font-bold text-slate-900 hover:text-indigo-600 transition-colors">Order</Link>
-            <Link to="/deliveries" className="text-sm font-bold text-slate-900 hover:text-indigo-600 transition-colors">Activity</Link>
-            <Link to="/wallet" className="text-sm font-bold text-indigo-600 bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 flex items-center gap-2 hover:bg-indigo-100 transition-all">
+            <Link to="/order" className="text-sm font-bold text-slate-900 hover:text-indigo-600">Order</Link>
+            <Link to="/deliveries" className="text-sm font-bold text-slate-900 hover:text-indigo-600">Activity</Link>
+            <Link to="/wallet" className="text-sm font-black text-indigo-600 bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 flex items-center gap-2 hover:bg-indigo-100">
               <i className="fa-solid fa-wallet"></i>
-              Wallet
+              {formatNaira(balance)}
             </Link>
           </div>
         )}
@@ -37,28 +49,16 @@ const Navbar: React.FC = () => {
           {user ? (
             <>
               <div className="flex flex-col items-end mr-2">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">
-                  {user.role} Account
-                </span>
-                <span className="text-sm font-black text-slate-900 leading-none">{user.name}</span>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{user.role} Account</span>
+                <span className="text-sm font-black text-slate-900">{user.name}</span>
               </div>
-              <button 
-                onClick={handleLogout}
-                className="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all"
-              >
-                Logout
-              </button>
-              <img 
-                src={user.avatar} 
-                className="w-10 h-10 rounded-xl ring-2 ring-slate-100 object-cover cursor-pointer hover:scale-110 transition-transform" 
-                alt="Avatar"
-                onClick={() => navigate(user.role === 'rider' ? '/rider-dashboard' : '/order')}
-              />
+              <button onClick={handleLogout} className="px-5 py-2.5 rounded-xl text-xs font-black uppercase text-slate-400 hover:text-red-600 transition-all">Logout</button>
+              <img src={user.avatar} className="w-10 h-10 rounded-xl ring-2 ring-slate-100 cursor-pointer" alt="Avatar" onClick={() => navigate(user.role === 'rider' ? '/rider-dashboard' : '/order')} />
             </>
           ) : (
             <div className="flex items-center gap-4">
-              <Link to="/auth" className="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors">Login</Link>
-              <Link to="/signup" className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all">Join Now</Link>
+              <Link to="/auth" className="text-sm font-bold text-slate-500 hover:text-indigo-600">Login</Link>
+              <Link to="/signup" className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-lg hover:bg-indigo-700">Join Now</Link>
             </div>
           )}
         </div>

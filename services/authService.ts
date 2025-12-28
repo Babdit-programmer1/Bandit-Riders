@@ -12,17 +12,14 @@ const DEFAULT_CREDENTIALS = [
 ];
 
 const DEFAULT_REVIEWS = [
-  { id: 'r1', customerName: 'Sarah J.', rating: 5, comment: 'Incredibly fast and professional. The package arrived in perfect condition!', date: '2 days ago' },
-  { id: 'r2', customerName: 'Mike R.', rating: 5, comment: 'Always a pleasure shipping with this rider. Highly recommended!', date: '1 week ago' }
+  { id: 'r1', customerName: 'Sarah J.', rating: 5, comment: 'Incredibly fast and professional!', date: '2 days ago' },
+  { id: 'r2', customerName: 'Mike R.', rating: 5, comment: 'Always reliable. Best dispatcher in the city.', date: '1 week ago' }
 ];
 
 export const authService = {
   signup: (name: string, email: string, role: UserRole, password: string): User | null => {
     const users = JSON.parse(localStorage.getItem(USERS_DB_KEY) || '[]');
-    
-    if (users.find((u: any) => u.email === email)) {
-      return null;
-    }
+    if (users.find((u: any) => u.email === email)) return null;
 
     const newUser: User = {
       name,
@@ -32,7 +29,7 @@ export const authService = {
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`,
       isAuthenticated: true,
       phone: '',
-      vehicleType: role === 'rider' ? 'Bicycle' : '',
+      vehicleType: role === 'rider' ? 'Elite Bike' : '',
       plateNumber: role === 'rider' ? 'LAG-442-XP' : '',
       isAvailable: true,
       credentials: role === 'rider' ? DEFAULT_CREDENTIALS : [],
@@ -55,24 +52,15 @@ export const authService = {
       if (sessionUser.role === 'rider') {
         if (!sessionUser.credentials) sessionUser.credentials = DEFAULT_CREDENTIALS;
         if (!sessionUser.reviews) sessionUser.reviews = DEFAULT_REVIEWS;
-        if (!sessionUser.plateNumber) sessionUser.plateNumber = 'LAG-442-XP';
       }
       
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser));
-      
-      if (rememberMe) {
-        localStorage.setItem(REMEMBER_KEY, email);
-      } else {
-        localStorage.removeItem(REMEMBER_KEY);
-      }
+      if (rememberMe) localStorage.setItem(REMEMBER_KEY, email);
+      else localStorage.removeItem(REMEMBER_KEY);
       
       return sessionUser;
     }
     return null;
-  },
-
-  getRememberedEmail: (): string => {
-    return localStorage.getItem(REMEMBER_KEY) || '';
   },
 
   updateUser: (userData: Partial<User>) => {
@@ -87,17 +75,11 @@ export const authService = {
     localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsers));
   },
 
-  logout: () => {
-    localStorage.removeItem(SESSION_KEY);
-  },
-
+  getRememberedEmail: () => localStorage.getItem(REMEMBER_KEY) || '',
+  logout: () => localStorage.removeItem(SESSION_KEY),
   getCurrentUser: (): User | null => {
     const session = localStorage.getItem(SESSION_KEY);
     return session ? JSON.parse(session) : null;
   },
-
-  isAuthenticated: (): boolean => {
-    const user = authService.getCurrentUser();
-    return !!(user && user.isAuthenticated);
-  }
+  isAuthenticated: () => !!authService.getCurrentUser()?.isAuthenticated
 };
