@@ -33,6 +33,7 @@ export const authService = {
       isAuthenticated: true,
       phone: '',
       vehicleType: role === 'rider' ? 'Bicycle' : '',
+      plateNumber: role === 'rider' ? 'LAG-442-XP' : '',
       isAvailable: true,
       credentials: role === 'rider' ? DEFAULT_CREDENTIALS : [],
       reviews: role === 'rider' ? DEFAULT_REVIEWS : []
@@ -40,7 +41,6 @@ export const authService = {
 
     users.push(newUser);
     localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
-    
     localStorage.setItem(SESSION_KEY, JSON.stringify(newUser));
     return newUser;
   },
@@ -51,10 +51,11 @@ export const authService = {
 
     if (user && user.password === password) {
       const sessionUser = { ...user, isAuthenticated: true };
-      // Ensure existing users get some default data if they don't have it
+      
       if (sessionUser.role === 'rider') {
         if (!sessionUser.credentials) sessionUser.credentials = DEFAULT_CREDENTIALS;
         if (!sessionUser.reviews) sessionUser.reviews = DEFAULT_REVIEWS;
+        if (!sessionUser.plateNumber) sessionUser.plateNumber = 'LAG-442-XP';
       }
       
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser));
