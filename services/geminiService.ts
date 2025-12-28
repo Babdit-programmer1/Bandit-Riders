@@ -4,11 +4,10 @@ import { Delivery, BookingEstimate } from "../types";
 import { calculateFare } from "../utils/fareCalculator";
 
 export const getAIInsights = async (deliveries: Delivery[]) => {
-  // Always initialize GoogleGenAI inside the function to use the most recent API key from environment
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
-    const prompt = `Analyze these dispatch deliveries and provide 3 brief, actionable insights for the rider. Focus on efficiency, safety, and fuel optimization. Deliveries: ${JSON.stringify(deliveries)}`;
+    const prompt = `Analyze these professional dispatch records for a logistics command center. Provide 3 brief, high-level tactical observations regarding efficiency, risk, and route density. Avoid casual AI conversational filler. Deliveries: ${JSON.stringify(deliveries)}`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -30,23 +29,21 @@ export const getAIInsights = async (deliveries: Delivery[]) => {
       }
     });
 
-    // response.text is a property, not a method
     return JSON.parse(response.text || '[]');
   } catch (error) {
     return [
-      { title: "Traffic Warning", content: "Heavy congestion reported on Maple Avenue.", category: "efficiency" },
-      { title: "Safety First", content: "Light rain expected in 20 minutes.", category: "safety" },
-      { title: "Earning Opportunity", content: "High demand detected in the Downtown area.", category: "earnings" }
+      { title: "Grid Update", content: "Main arteries show standard congestion. No major diversions required.", category: "efficiency" },
+      { title: "Environmental Log", content: "Visibility maintains optimal levels for high-speed transit.", category: "safety" },
+      { title: "Demand Analysis", category: "earnings", content: "Peak session identified in central commercial zones." }
     ];
   }
 };
 
 export const getBookingEstimate = async (pickup: string, dropoff: string, items: string): Promise<BookingEstimate> => {
-  // Always initialize GoogleGenAI inside the function to use the most recent API key from environment
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
-    const prompt = `Act as a logistics engine. Estimate distance (km), duration (mins), and price ($) for a delivery from "${pickup}" to "${dropoff}" for items: "${items}". Return JSON.`;
+    const prompt = `Act as a logistics system telemetry engine. Calculate distance (km) and duration (mins) for a delivery from "${pickup}" to "${dropoff}" for items: "${items}". Provide a formal 'reasoning' string explaining the route variables (e.g. traffic load, route density, cargo handling requirements) in a professional logistics tone. No casual filler. Return JSON.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -66,10 +63,7 @@ export const getBookingEstimate = async (pickup: string, dropoff: string, items:
       }
     });
 
-    // response.text is a property, not a method
     const result = JSON.parse(response.text || '{}');
-    
-    // Extract numeric values to compute the required breakdown
     const distanceVal = parseFloat(result.distance) || 5;
     const durationVal = parseInt(result.duration) || 20;
 
@@ -80,12 +74,11 @@ export const getBookingEstimate = async (pickup: string, dropoff: string, items:
   } catch (error) {
     const defaultDist = 4.2;
     const defaultDur = 18;
-    // reasoning is now part of the BookingEstimate interface in types.ts
     return {
-      price: 15.50,
+      price: 1550,
       distance: "4.2 km",
       duration: "18 mins",
-      reasoning: "Standard base rate for inner city delivery.",
+      reasoning: "Standard urban transit parameters applied to this route segment.",
       breakdown: calculateFare(defaultDist, defaultDur)
     };
   }

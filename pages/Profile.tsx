@@ -2,6 +2,7 @@
 import React from 'react';
 import { RiderProfile } from '../types';
 import Button from '../components/Button';
+import { formatNaira } from '../utils/fareCalculator';
 
 interface ProfileProps {
   profile: RiderProfile;
@@ -9,110 +10,68 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ profile }) => {
   const stats = [
-    { label: 'Deliveries', value: profile.totalDeliveries, icon: 'fa-box', color: 'bg-blue-50 text-blue-600' },
-    { label: 'Rating', value: `${profile.rating}/5.0`, icon: 'fa-star', color: 'bg-amber-50 text-amber-600' },
-    { label: 'Earnings', value: `$${profile.earnings.toFixed(2)}`, icon: 'fa-hand-holding-dollar', color: 'bg-green-50 text-green-600' },
-    { label: 'Exp', value: 'Lv. 12', icon: 'fa-medal', color: 'bg-purple-50 text-purple-600' },
-  ];
-
-  const badges = [
-    { name: 'Speed Demon', icon: 'fa-bolt', desc: 'Average delivery < 15 mins' },
-    { name: 'Rain Rider', icon: 'fa-cloud-rain', desc: '100 deliveries in bad weather' },
-    { name: 'Five Star', icon: 'fa-star', desc: '50 consecutive 5-star ratings' },
-    { name: 'Eco Carrier', icon: 'fa-leaf', desc: 'Efficient fuel consumption' },
+    { label: 'Fulfillment', value: profile.totalDeliveries, icon: 'fa-box' },
+    { label: 'Network Rating', value: profile.rating, icon: 'fa-star' },
+    { label: 'Total Settled', value: formatNaira(profile.earnings), icon: 'fa-wallet' },
+    { label: 'Pilot Grade', value: 'VETERAN', icon: 'fa-medal' },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="h-32 bg-indigo-600 relative">
-          <div className="absolute top-0 right-0 p-6 opacity-10">
-            <i className="fa-solid fa-person-biking text-8xl text-white"></i>
+    <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="bg-white rounded-[3.5rem] shadow-premium border border-slate-100 overflow-hidden">
+        <div className="h-40 bg-slate-900 relative">
+          <div className="absolute top-0 right-0 p-12 opacity-5">
+            <i className="fa-solid fa-person-biking text-[10rem] text-white"></i>
           </div>
         </div>
-        <div className="px-8 pb-8">
-          <div className="relative -mt-16 mb-6 flex items-end justify-between">
-            <div className="w-32 h-32 rounded-3xl border-4 border-white overflow-hidden shadow-xl bg-gray-100">
+        <div className="px-12 pb-12">
+          <div className="relative -mt-16 mb-10 flex items-end justify-between">
+            <div className="w-36 h-36 rounded-[2.5rem] border-8 border-white overflow-hidden shadow-2xl bg-slate-100">
               <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
             </div>
-            <div className="pb-2">
-              <Button variant="outline" size="sm" className="gap-2">
-                <i className="fa-solid fa-pen"></i> Edit Profile
+            <div className="pb-4">
+              <Button variant="outline" size="sm" className="rounded-2xl px-6 py-3 font-black uppercase text-[10px] tracking-widest border-slate-200">
+                Configure Profile
               </Button>
             </div>
           </div>
           
-          <div className="mb-8">
-            <h2 className="text-3xl font-black text-gray-900">{profile.name}</h2>
-            <div className="flex items-center gap-2 text-gray-500 mt-1">
-              <i className="fa-solid fa-motorcycle"></i>
-              <span className="font-medium">{profile.bikeModel}</span>
-              <span className="mx-2">•</span>
-              <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">VETERAN</span>
-            </div>
+          <div className="mb-12">
+            <h2 className="text-4xl font-black text-slate-900 tracking-tighter">{profile.name}</h2>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2">Registry: {profile.bikeModel}</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, idx) => (
-              <div key={idx} className="bg-gray-50 p-4 rounded-2xl text-center border border-gray-100">
-                <div className={`w-10 h-10 ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
-                  <i className={`fa-solid ${stat.icon}`}></i>
-                </div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                <h4 className="text-xl font-black text-gray-900">{stat.value}</h4>
+              <div key={idx} className="bg-slate-50 p-8 rounded-3xl border border-slate-100 group">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 group-hover:text-indigo-600 transition-colors">{stat.label}</p>
+                <h4 className="text-2xl font-black text-slate-900 tracking-tighter">{stat.value}</h4>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-          <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-3">
-            <i className="fa-solid fa-award text-indigo-600"></i> Achievements
-          </h3>
-          <div className="grid grid-cols-1 gap-4">
-            {badges.map((badge, idx) => (
-              <div key={idx} className="flex items-center gap-4 p-4 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-colors cursor-default group">
-                <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <i className={`fa-solid ${badge.icon} text-xl`}></i>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="bg-white p-10 rounded-[3.5rem] shadow-premium border border-slate-100">
+          <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tighter">Pilot Records</h3>
+          <div className="space-y-4">
+            {['Speed Demon', 'Route Expert', 'Elite Pilot'].map((badge, idx) => (
+              <div key={idx} className="flex items-center gap-6 p-6 border border-slate-100 rounded-[2rem] hover:bg-slate-50 transition-all">
+                <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-black">
+                  <i className="fa-solid fa-award"></i>
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-900">{badge.name}</h4>
-                  <p className="text-xs text-gray-500">{badge.desc}</p>
-                </div>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs">{badge}</h4>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-          <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-3">
-            <i className="fa-solid fa-shield-halved text-indigo-600"></i> Safety Log
-          </h3>
-          <div className="space-y-4">
-            <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl">
-              <p className="text-sm font-bold text-emerald-800">Perfect Safety Score</p>
-              <p className="text-xs text-emerald-600 mt-1">You haven't had a reported incident in 340 deliveries. Keep it up!</p>
-            </div>
-            <div className="space-y-3">
-              <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Recent Maintenance</h5>
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Oil Change</span>
-                <span className="text-gray-400">12 days ago</span>
-              </div>
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Tire Rotation</span>
-                <span className="text-gray-400">1 month ago</span>
-              </div>
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Brake Check</span>
-                <span className="text-gray-400">3 months ago</span>
-              </div>
-            </div>
-            <Button variant="secondary" fullWidth className="mt-4">
-              Log Maintenance
-            </Button>
+        <div className="bg-slate-900 p-10 rounded-[3.5rem] shadow-premium text-white relative overflow-hidden">
+          <h3 className="text-2xl font-black mb-8 tracking-tighter">Safety Status</h3>
+          <div className="p-8 bg-emerald-500/10 border border-emerald-500/20 rounded-[2rem]">
+            <p className="text-xs font-black text-emerald-400 uppercase tracking-widest mb-2">Clear History</p>
+            <p className="text-sm font-medium text-slate-300 leading-relaxed">System monitoring indicates 100% safety compliance across 340 consecutive segments.</p>
           </div>
         </div>
       </div>

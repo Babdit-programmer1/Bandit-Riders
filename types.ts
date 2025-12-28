@@ -3,7 +3,6 @@ export enum DeliveryStatus {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
   PICKED_UP = 'Picked Up',
-  /* Added IN_PROGRESS to fix "Property does not exist" errors in components and data files */
   IN_PROGRESS = 'In Progress',
   IN_TRANSIT = 'In Transit',
   DELIVERED = 'Delivered',
@@ -23,19 +22,23 @@ export interface LocationCoords {
   lng: number;
 }
 
-export interface Review {
+/**
+ * Added RiderCredential and RiderReview to define the structure 
+ * of rider achievements and feedback in the dispatch network.
+ */
+export interface RiderCredential {
+  id: string;
+  label: string;
+  icon: string;
+  issueDate: string;
+}
+
+export interface RiderReview {
   id: string;
   customerName: string;
   rating: number;
   comment: string;
   date: string;
-}
-
-export interface Credential {
-  id: string;
-  label: string;
-  icon: string;
-  issueDate: string;
 }
 
 export interface User {
@@ -49,11 +52,10 @@ export interface User {
   vehicleType?: string;
   plateNumber?: string;
   isAvailable?: boolean;
-  location?: LocationCoords;
   totalEarnings?: number;
-  totalDeliveries?: number;
-  credentials?: Credential[];
-  reviews?: Review[];
+  // Added optional credentials and reviews to support rider portfolio features
+  credentials?: RiderCredential[];
+  reviews?: RiderReview[];
 }
 
 export interface WalletTransaction {
@@ -67,6 +69,14 @@ export interface WalletTransaction {
 export interface WalletData {
   balance: number;
   transactions: WalletTransaction[];
+}
+
+export interface FareBreakdownData {
+  base: number;
+  distanceCost: number;
+  timeCost: number;
+  multiplier: number;
+  total: number;
 }
 
 export interface Delivery {
@@ -89,14 +99,6 @@ export interface Delivery {
   history: { status: DeliveryStatus; time: string }[];
 }
 
-export interface FareBreakdownData {
-  base: number;
-  distanceCost: number;
-  timeCost: number;
-  multiplier: number;
-  total: number;
-}
-
 export interface BookingEstimate {
   price: number;
   distance: string;
@@ -105,6 +107,10 @@ export interface BookingEstimate {
   breakdown: FareBreakdownData;
 }
 
+/**
+ * Added RiderProfile for use in the Header, Profile pages, 
+ * and as a central type for rider performance metrics.
+ */
 export interface RiderProfile {
   name: string;
   bikeModel: string;
@@ -114,4 +120,7 @@ export interface RiderProfile {
   avatar: string;
 }
 
+/**
+ * Added CustomerView for state management within the sender portal navigation.
+ */
 export type CustomerView = 'landing' | 'booking' | 'tracking';

@@ -6,11 +6,12 @@ export const calculateFare = (distanceKm: number, durationMins: number): FareBre
   const PER_KM = 150;
   const PER_MIN = 50;
   
-  // Simulated demand multiplier based on time of day
   const hour = new Date().getHours();
   let multiplier = 1.0;
-  if (hour >= 16 && hour <= 19) multiplier = 1.5; // Rush hour
-  else if (hour >= 7 && hour <= 9) multiplier = 1.2; // Morning rush
+  // Surge pricing for Lagos rush hours
+  if ((hour >= 7 && hour <= 9) || (hour >= 16 && hour <= 19)) {
+    multiplier = 1.65;
+  }
   
   const distanceCost = distanceKm * PER_KM;
   const timeCost = durationMins * PER_MIN;
@@ -18,8 +19,8 @@ export const calculateFare = (distanceKm: number, durationMins: number): FareBre
 
   return {
     base: BASE_FARE,
-    distanceCost,
-    timeCost,
+    distanceCost: Math.round(distanceCost),
+    timeCost: Math.round(timeCost),
     multiplier,
     total: Math.round(total)
   };

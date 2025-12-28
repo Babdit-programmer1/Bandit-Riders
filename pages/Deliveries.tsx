@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Delivery } from '../types';
 import { authService } from '../services/authService';
 import StatusBadge from '../components/StatusBadge';
+import { formatNaira } from '../utils/fareCalculator';
 
 const Deliveries: React.FC = () => {
   const navigate = useNavigate();
@@ -16,14 +17,14 @@ const Deliveries: React.FC = () => {
   }, [user]);
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-slate-50 px-6">
-      <div className="max-w-6xl mx-auto space-y-10">
+    <div className="min-h-screen pt-32 pb-20 bg-[#f8fafc] px-6">
+      <div className="max-w-6xl mx-auto space-y-12">
         <div className="flex justify-between items-end">
           <div>
             <h2 className="text-5xl font-black text-slate-900 tracking-tighter mb-2">My Dispatch</h2>
-            <p className="text-slate-400 font-medium uppercase tracking-widest text-[10px]">Tracking {deliveries.length} active orders</p>
+            <p className="text-slate-400 font-black uppercase tracking-[0.2em] text-[10px]">Registry: {deliveries.length} entries</p>
           </div>
-          <button onClick={() => navigate('/order')} className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl hover:bg-indigo-700 transition-all">New Order</button>
+          <button onClick={() => navigate('/order')} className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-indigo-600 transition-all">New Order</button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -32,41 +33,34 @@ const Deliveries: React.FC = () => {
               <div 
                 key={d.id} 
                 onClick={() => navigate(`/track/${d.id}`)}
-                className="bg-white p-8 rounded-[2.5rem] shadow-premium border border-slate-100 hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer group"
+                className="bg-white p-8 rounded-[3rem] shadow-premium border border-slate-100 hover:shadow-3xl hover:-translate-y-1 transition-all cursor-pointer group"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">{d.id}</span>
-                    <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors">{d.address}</h3>
-                  </div>
+                <div className="flex justify-between items-start mb-8">
                   <StatusBadge type="status" value={d.status} />
+                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{d.id}</span>
                 </div>
                 
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                    <i className="fa-solid fa-clock w-4"></i>
-                    <span>Ordered at {d.orderTime}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm font-bold text-slate-400">
-                    <i className="fa-solid fa-box-open w-4"></i>
-                    <span>{d.items.length} Package(s)</span>
+                <div className="mb-10">
+                  <h3 className="text-2xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight mb-4">{d.address}</h3>
+                  <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                    <i className="fa-solid fa-clock"></i>
+                    <span>Log {d.orderTime}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                  <span className="text-2xl font-black text-slate-900">${d.price.toFixed(2)}</span>
-                  <div className="flex items-center gap-2 text-indigo-600 font-black text-xs uppercase tracking-widest">
-                    Live Track <i className="fa-solid fa-arrow-right"></i>
+                <div className="flex items-center justify-between pt-8 border-t border-slate-50">
+                  <span className="text-2xl font-black text-slate-900">{formatNaira(d.price)}</span>
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                    <i className="fa-solid fa-arrow-right-long"></i>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="col-span-full py-32 text-center bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
-              <i className="fa-solid fa-satellite-dish text-6xl text-slate-200 mb-6"></i>
-              <h3 className="text-2xl font-black text-slate-400">No active deliveries found.</h3>
-              <p className="text-slate-400 font-medium mb-8">Start your first shipment today with Bandit Riders.</p>
-              <button onClick={() => navigate('/order')} className="text-indigo-600 font-black uppercase tracking-widest text-sm hover:underline">Book Your First Rider</button>
+            <div className="col-span-full py-32 text-center bg-white rounded-[4rem] border border-slate-100 shadow-premium">
+              <i className="fa-solid fa-satellite-dish text-6xl text-slate-100 mb-6"></i>
+              <h3 className="text-2xl font-black text-slate-300">Scanning Records...</h3>
+              <button onClick={() => navigate('/order')} className="mt-8 text-indigo-600 font-black uppercase tracking-widest text-xs hover:underline">Start Dispatch</button>
             </div>
           )}
         </div>

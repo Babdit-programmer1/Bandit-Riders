@@ -8,96 +8,60 @@ const Landing: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-32 overflow-hidden">
+      <section className="relative pt-48 pb-32 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-indigo-50 px-4 py-2 rounded-full border border-indigo-100 mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-              </span>
-              <span className="text-xs font-black text-indigo-600 uppercase tracking-widest">Global Logistics Network</span>
+          <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
+            <div className="inline-flex items-center gap-3 bg-indigo-50 px-5 py-2.5 rounded-full border border-indigo-100 mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+              <div className="flex h-2 w-2 relative">
+                <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></div>
+                <div className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></div>
+              </div>
+              <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em]">Next-Gen Dispatch Network</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-black text-slate-900 leading-[0.9] tracking-tighter mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              Dispatch at the <br/>
-              <span className="gradient-text">Edge of Speed.</span>
+            <h1 className="text-7xl md:text-[10rem] font-black text-slate-900 leading-[0.85] tracking-tighter mb-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              SPEED IS <br/>
+              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">ABSOLUTE.</span>
             </h1>
             
-            <p className="text-xl text-slate-500 font-medium mb-12 max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
-              Elite riders. Intelligent routing. Instant fulfillment. Bandit Riders is the premier platform for high-performance urban deliveries.
+            <p className="text-xl text-slate-500 font-medium mb-16 max-w-2xl leading-relaxed">
+              Premium Lagos dispatch for those who don't wait. Vetted riders, sub-meter accuracy, and instant wallet settlement.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-              <Button size="lg" className="rounded-[2rem] px-12 py-7 text-lg font-black shadow-2xl shadow-indigo-200 bg-indigo-600 hover:bg-indigo-700" onClick={() => navigate('/signup')}>
-                Start Sending
+            <div className="flex flex-wrap justify-center gap-6">
+              <Button size="lg" className="rounded-full px-12 py-8 text-xl font-black shadow-[0_20px_50px_rgba(79,70,229,0.3)] bg-indigo-600 hover:scale-105 transition-transform" onClick={() => navigate('/signup')}>
+                Dispatch Now
               </Button>
-              <Button variant="outline" size="lg" className="rounded-[2rem] px-12 py-7 text-lg font-black border-2 border-slate-100" onClick={() => navigate('/signup')}>
-                Join as Rider
+              <Button variant="outline" size="lg" className="rounded-full px-12 py-8 text-xl font-black border-2 border-slate-100 hover:bg-slate-50" onClick={() => navigate('/signup')}>
+                Earn as Rider
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Abstract Background Decor */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-50 rounded-full blur-[120px] opacity-50 -mr-96 -mt-96"></div>
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-50 rounded-full blur-[100px] opacity-40 -ml-48 -mb-48"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
+          <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-indigo-100/40 rounded-full blur-[120px]"></div>
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-purple-100/30 rounded-full blur-[100px]"></div>
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <div className="bg-slate-900 py-16">
+      <div className="bg-slate-950 py-24">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
             {[
-              { label: 'Active Riders', val: '12.4K' },
-              { label: 'Avg Delivery', val: '14.2m' },
-              { label: 'Rating', val: '4.9/5' },
-              { label: 'Success Rate', val: '99.9%' }
+              { label: 'Active Pilots', val: '15.2K' },
+              { label: 'Avg Fulfillment', val: '12.4m' },
+              { label: 'Network Uptime', val: '99.9%' },
+              { label: 'Lagos Coverage', val: '100%' }
             ].map((s, i) => (
-              <div key={i} className="text-center">
-                <p className="text-4xl font-black text-white mb-2">{s.val}</p>
-                <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">{s.label}</p>
+              <div key={i} className="text-center group">
+                <p className="text-5xl font-black text-white mb-3 group-hover:text-indigo-400 transition-colors">{s.val}</p>
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">{s.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { icon: 'fa-bolt', title: 'Express Dispatch', desc: 'Surgical precision in routing ensures your items arrive in record time.' },
-              { icon: 'fa-user-ninja', title: 'Elite Couriers', desc: 'Vetted, high-performance riders trained for metropolitan agility.' },
-              { icon: 'fa-satellite', title: 'Live Telemetry', desc: 'Sub-meter tracking accuracy for peace of mind on every shipment.' }
-            ].map((f, i) => (
-              <div key={i} className="group">
-                <div className="w-16 h-16 bg-slate-50 text-indigo-600 rounded-[2rem] flex items-center justify-center mb-8 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                  <i className={`fa-solid ${f.icon} text-2xl`}></i>
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 mb-4">{f.title}</h3>
-                <p className="text-slate-500 font-medium leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-20 border-t border-slate-100 bg-slate-50">
-        <div className="container mx-auto px-6 text-center space-y-8">
-           <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-12 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg">
-              <i className="fa-solid fa-bolt-auto text-2xl"></i>
-            </div>
-            <span className="text-2xl font-black tracking-tighter">BANDIT<span className="text-slate-400">RIDERS</span></span>
-          </div>
-          <p className="text-slate-400 text-sm font-medium">© 2025 Bandit Riders Dispatch. Premium School Project Simulation.</p>
-        </div>
-      </footer>
     </div>
   );
 };
